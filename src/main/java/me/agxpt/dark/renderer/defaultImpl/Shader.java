@@ -89,7 +89,7 @@ public class Shader implements IShader {
      * @param name The uniform name.
      * @return The location of the uniform with the specified name.
      */
-    private int getLocation(String name) {
+    protected int getLocation(String name) {
         if (uniformLocations.containsKey(name)) return uniformLocations.get(name);
 
         int location = glGetUniformLocation(id, name);
