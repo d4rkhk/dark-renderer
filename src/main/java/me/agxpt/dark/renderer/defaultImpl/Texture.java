@@ -19,10 +19,10 @@ import static org.lwjgl.opengl.GL30C.glGenerateMipmap;
  * Default implementation of {@link IShader}
  */
 public class Texture implements ITexture {
-    private final int id;
-    private final int width, height;
-    private final Format format;
-    private final MinFilter minFilter;
+    protected final int id;
+    protected final int width, height;
+    protected final Format format;
+    protected final MinFilter minFilter;
     private int lastSlot = 0;
 
     /**
@@ -106,7 +106,7 @@ public class Texture implements ITexture {
      *
      * @param buffer The texture data buffer.
      */
-    private void upload(ByteBuffer buffer) {
+    protected void upload(ByteBuffer buffer) {
         if (buffer != null) buffer.rewind();
 
         Renderer.gl.bindTexture(id);

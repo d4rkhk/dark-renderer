@@ -14,8 +14,8 @@ import static org.lwjgl.opengl.GL20C.*;
  * Default implementation of {@link IShader}
  */
 public class Shader implements IShader {
-    private final int id;
-    private final Map<String, Integer> uniformLocations = new HashMap<>();
+    protected final int id;
+    protected final Map<String, Integer> uniformLocations = new HashMap<>();
 
     public Shader(String vertexSrc, String fragmentSrc) {
         int vert = createShader(vertexSrc, ShaderType.Vertex);
