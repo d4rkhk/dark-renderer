@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.github.d4rkhk:dark-common:805b8026a9'
+    compileOnly 'com.github.d4rkhk:dark-common:e47b3b2802'
 
     compileOnly platform('org.lwjgl:lwjgl-bom:3.3.0')
 
