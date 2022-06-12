@@ -194,7 +194,7 @@ public class Texture implements ITexture {
     /**
      * Texture pixel formats.
      */
-    enum Format {
+    public enum Format {
         R(GL_RED, 1),
         RGB(GL_RGB, 3),
         RGBA(GL_RGBA, 4);
@@ -209,7 +209,7 @@ public class Texture implements ITexture {
     /**
      * Texture minification filters.
      */
-    enum MinFilter {
+    public enum MinFilter {
         Nearest(GL_NEAREST, false),
         Linear(GL_LINEAR, false),
         MipMapLinear(GL_LINEAR_MIPMAP_LINEAR, true);
@@ -225,7 +225,7 @@ public class Texture implements ITexture {
     /**
      * Texture magnification filters.
      */
-    enum MagFilter {
+    public enum MagFilter {
         Nearest(GL_NEAREST),
         Linear(GL_LINEAR);
         public final int gl;
