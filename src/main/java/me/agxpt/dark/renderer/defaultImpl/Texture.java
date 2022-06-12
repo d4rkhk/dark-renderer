@@ -8,6 +8,7 @@ import org.lwjgl.stb.STBImage;
 import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import static org.lwjgl.opengl.GL11C.*;
@@ -26,16 +27,15 @@ public class Texture implements ITexture {
     private int lastSlot = 0;
 
     /**
-     * Creates a new texture from a {@link ByteBuffer}.
+     * Creates a new texture.
      *
      * @param width     The texture width.
      * @param height    The texture height.
-     * @param buffer    The texture buffer.
      * @param format    The texture format.
      * @param minFilter The minifying filter.
      * @param magFilter The magnifying filter.
      */
-    public Texture(int width, int height, ByteBuffer buffer, Format format, MinFilter minFilter, MagFilter magFilter) {
+    protected Texture(int width, int height, Format format, MinFilter minFilter, MagFilter magFilter) {
         this.width = width;
         this.height = height;
         this.format = format;
@@ -57,7 +57,35 @@ public class Texture implements ITexture {
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, minFilter.gl);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, magFilter.gl);
+    }
 
+    /**
+     * Creates a new texture from a {@link ByteBuffer}.
+     *
+     * @param width     The texture width.
+     * @param height    The texture height.
+     * @param buffer    The texture buffer.
+     * @param format    The texture format.
+     * @param minFilter The minifying filter.
+     * @param magFilter The magnifying filter.
+     */
+    public Texture(int width, int height, ByteBuffer buffer, Format format, MinFilter minFilter, MagFilter magFilter) {
+        this(width, height, format, minFilter, magFilter);
+        upload(buffer);
+    }
+
+    /**
+     * Creates a new texture from a {@link FloatBuffer}.
+     *
+     * @param width     The texture width.
+     * @param height    The texture height.
+     * @param buffer    The texture buffer.
+     * @param format    The texture format.
+     * @param minFilter The minifying filter.
+     * @param magFilter The magnifying filter.
+     */
+    public Texture(int width, int height, FloatBuffer buffer, Format format, MinFilter minFilter, MagFilter magFilter) {
+        this(width, height, format, minFilter, magFilter);
         upload(buffer);
     }
 
@@ -73,6 +101,20 @@ public class Texture implements ITexture {
      */
     public Texture(int width, int height, byte[] data, Format format, MinFilter minFilter, MagFilter magFilter) {
         this(width, height, BufferUtils.createByteBuffer(data.length).put(data), format, minFilter, magFilter);
+    }
+
+    /**
+     * Creates a new texture from a float array.
+     *
+     * @param width     The texture width.
+     * @param height    The texture height.
+     * @param data      The texture data.
+     * @param format    The texture format.
+     * @param minFilter The minifying filter.
+     * @param magFilter The magnifying filter.
+     */
+    public Texture(int width, int height, float[] data, Format format, MinFilter minFilter, MagFilter magFilter) {
+        this(width, height, BufferUtils.createFloatBuffer(data.length).put(data), format, minFilter, magFilter);
     }
 
     /**
@@ -102,7 +144,7 @@ public class Texture implements ITexture {
     }
 
     /**
-     * Uploads a texture.
+     * Uploads a byte texture.
      *
      * @param buffer The texture data buffer.
      */
@@ -111,6 +153,19 @@ public class Texture implements ITexture {
 
         Renderer.gl.bindTexture(id);
         glTexImage2D(GL_TEXTURE_2D, 0, format.gl, width, height, 0, format.gl, GL_UNSIGNED_BYTE, buffer);
+        if (minFilter.mipMap) glGenerateMipmap(GL_TEXTURE_2D);
+    }
+
+    /**
+     * Uploads a float texture.
+     *
+     * @param buffer The texture data buffer.
+     */
+    protected void upload(FloatBuffer buffer) {
+        if (buffer != null) buffer.rewind();
+
+        Renderer.gl.bindTexture(id);
+        glTexImage2D(GL_TEXTURE_2D, 0, format.gl, width, height, 0, format.gl, GL_FLOAT, buffer);
         if (minFilter.mipMap) glGenerateMipmap(GL_TEXTURE_2D);
     }
 
