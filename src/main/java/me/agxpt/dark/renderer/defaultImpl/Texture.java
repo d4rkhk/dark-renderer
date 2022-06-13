@@ -152,7 +152,7 @@ public class Texture implements ITexture {
         if (buffer != null) buffer.rewind();
 
         Renderer.gl.bindTexture(id);
-        glTexImage2D(GL_TEXTURE_2D, 0, format.gl, width, height, 0, format.gl, GL_UNSIGNED_BYTE, buffer);
+        glTexImage2D(GL_TEXTURE_2D, 0, format.internalFormat, width, height, 0, format.format, GL_UNSIGNED_BYTE, buffer);
         if (minFilter.mipMap) glGenerateMipmap(GL_TEXTURE_2D);
     }
 
@@ -165,7 +165,7 @@ public class Texture implements ITexture {
         if (buffer != null) buffer.rewind();
 
         Renderer.gl.bindTexture(id);
-        glTexImage2D(GL_TEXTURE_2D, 0, format.gl, width, height, 0, format.gl, GL_FLOAT, buffer);
+        glTexImage2D(GL_TEXTURE_2D, 0, format.internalFormat, width, height, 0, format.format, GL_FLOAT, buffer);
         if (minFilter.mipMap) glGenerateMipmap(GL_TEXTURE_2D);
     }
 
@@ -195,17 +195,18 @@ public class Texture implements ITexture {
      * Texture pixel formats.
      */
     public enum Format {
-        R(GL_RED, 1),
-        RGB(GL_RGB, 3),
-        RGBA(GL_RGBA, 4),
+        R(GL_RED, GL_RED, 1),
+        RGB(GL_RGB, GL_RGB, 3),
+        RGBA(GL_RGBA, GL_RGBA, 4),
 
-        FloatR(GL_R32F, 1),
-        FloatRGB(GL_RGB32F, 3),
-        FloatRGBA(GL_RGBA32F, 4);
-        public final int gl, channels;
+        FloatR(GL_RED, GL_R32F, 1),
+        FloatRGB(GL_RGB, GL_RGB32F, 3),
+        FloatRGBA(GL_RGBA, GL_RGBA32F, 4);
+        public final int format, internalFormat, channels;
 
-        Format(int gl, int channels) {
-            this.gl = gl;
+        Format(int format, int internalFormat, int channels) {
+            this.internalFormat = internalFormat;
+            this.format = format;
             this.channels = channels;
         }
     }
