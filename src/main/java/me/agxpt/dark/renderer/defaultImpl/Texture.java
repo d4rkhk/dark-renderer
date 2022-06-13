@@ -14,7 +14,7 @@ import java.nio.IntBuffer;
 import static org.lwjgl.opengl.GL11C.*;
 import static org.lwjgl.opengl.GL12C.GL_UNPACK_IMAGE_HEIGHT;
 import static org.lwjgl.opengl.GL12C.GL_UNPACK_SKIP_IMAGES;
-import static org.lwjgl.opengl.GL30C.glGenerateMipmap;
+import static org.lwjgl.opengl.GL30C.*;
 
 /**
  * Default implementation of {@link IShader}
@@ -197,7 +197,11 @@ public class Texture implements ITexture {
     public enum Format {
         R(GL_RED, 1),
         RGB(GL_RGB, 3),
-        RGBA(GL_RGBA, 4);
+        RGBA(GL_RGBA, 4),
+
+        FloatR(GL_R32F, 1),
+        FloatRGB(GL_RGB32F, 3),
+        FloatRGBA(GL_RGBA32F, 4);
         public final int gl, channels;
 
         Format(int gl, int channels) {
